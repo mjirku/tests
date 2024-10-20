@@ -37,12 +37,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
-          git push origin HEAD:main
+          git push -f origin HEAD:main
           
       - name: Create Pull Request
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          git pull
           DATE=$(date +"%m-%d")
           COMMIT_TITLE="📸 Auto update screenshots. Date: ${DATE}"
           ./create-pull-request.sh "main" "test" "$COMMIT_TITLE" "$COMMIT_TITLE" "@mjirku" "@mjirku" "$GITHUB_TOKEN"
