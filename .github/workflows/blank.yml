@@ -46,4 +46,4 @@ jobs:
           DATE=$(date +"%m-%d")
           COMMIT_TITLE="📸 Auto update screenshots. Date: ${DATE}"
           ./create-pull-request.sh "main" "test" "$COMMIT_TITLE" "$COMMIT_TITLE" "@mjirku" "@mjirku" "$GITHUB_TOKEN"
-        echo "Auto update screenshots - END"
+          echo "Auto update screenshots - END"
