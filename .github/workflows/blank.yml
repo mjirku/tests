@@ -8,10 +8,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      issues: write
-      pull-requests: write
+    permissions:  # Explicitly setting permissions for GITHUB_TOKEN
+      contents: write  # To allow pushing changes
+      pull-requests: write  # To allow creating pull requests
+      issues: write  # In case you need to interact with issues
+      actions: write  # To trigger other actions if needed
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -34,10 +36,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
           git push origin HEAD:main
+          
+      - name: Create Pull Request
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
           DATE=$(date +"%m-%d")
           COMMIT_TITLE="📸 Auto update screenshots. Date: ${DATE}"
           ./create-pull-request.sh "main" "test" "$COMMIT_TITLE" "$COMMIT_TITLE" "@mjirku" "@mjirku" "$GITHUB_TOKEN"
-          echo "Auto update screenshots - END"
+        echo "Auto update screenshots - END"
