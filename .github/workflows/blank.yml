@@ -11,6 +11,7 @@ jobs:
     permissions:
       contents: write
       issues: write
+      pull-requests: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -25,8 +26,8 @@ jobs:
           echo "Making changes..."
           # Add your commands here to make changes
           # For example, create a new file
-          echo "This is a test file." > test-file2.txt
-          git add test-file2.txt
+          echo "This is a test file." > test-file3.txt
+          git add test-file3.txt
           git commit -m "Add test file"
 
       - name: Push changes
@@ -36,3 +37,7 @@ jobs:
           
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
           git push origin HEAD:main
+          DATE=$(date +"%m-%d")
+          COMMIT_TITLE="📸 Auto update screenshots. Date: ${DATE}"
+          ./create-pull-request.sh "main" "test" "$COMMIT_TITLE" "$COMMIT_TITLE" "@mjirku" "@mjirku" "$GITHUB_TOKEN"
+          echo "Auto update screenshots - END"
