@@ -15,6 +15,9 @@ ASSIGNEE=$5
 REVIEWER=$6
 TOKEN=$7
 
+# Use the GITHUB_REPOSITORY environment variable provided by GitHub Actions (owner/repo)
+REPO="${GITHUB_REPOSITORY}"
+
 # Creates a pull request from branch [BRANCH_NAME] to [TARGET_BRANCH] which is defined in
 # script parameters. Uses curl to post the pull request into GitHub's REST API v3.
 pullRequestBody="{
@@ -26,7 +29,8 @@ pullRequestBody="{
     \"reviewers\": [\"${REVIEWER}\"]
 }"
 
-githubApiUrl="https://api.github.com/repos/${{ github.repository }}/pulls"
+# Define the GitHub API URL using the GITHUB_REPOSITORY variable
+githubApiUrl="https://api.github.com/repos/${REPO}/pulls"
 
 # Create a pull request
 curl -X POST "${githubApiUrl}" \
